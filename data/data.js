@@ -44,6 +44,15 @@ const employees = [
     mobileNo: "123-456-7890",
     photo: "https://example.com/john-doe-photo.jpg",
   },
+  {
+    _id: 6,
+    name: "Abdu",
+    employeeId: "EMP006",
+    jobTitle: "Software Engineer",
+    emailAddress: "john@example.com",
+    mobileNo: "123-456-7890",
+    photo: "https://example.com/john-doe-photo.jpg",
+  },
 ];
 
 module.exports = employees;

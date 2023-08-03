@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const connectDB = require("./DB/db");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
 const employees = require("./data/data");
 
 // Initialize Express app
 const app = express();
+dotenv.config();
 
 // Connect to MongoDB
 connectDB();
@@ -24,7 +26,9 @@ app.get("/api/employees", (req, res) => {
 });
 
 app.get("/api/employees/:id", (req, res) => {
-  const employee = employees.find((emp) => emp._id.toString() === req.params.id);
+  const employee = employees.find(
+    (emp) => emp._id.toString() === req.params.id
+  );
 
   res.send(employee);
 });

@@ -75,7 +75,7 @@ const fireEmployee = asyncHandler(async (req, res) => {
   const employee = await Employee.findById(req.params.id);
 
   if (employee) {
-    await employee.remove();
+    await employee.deleteOne();
     res.json({ message: "Employee Fired!" });
   } else {
     res.status(404);

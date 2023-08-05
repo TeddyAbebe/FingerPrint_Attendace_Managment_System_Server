@@ -1,11 +1,29 @@
-const Employee = require("../models/Employee");
+const Employee = require("../models/employeeModel");
+const asyncHandler = require("express-async-handler");
+
+// Get all employees
+const getAllEmployees = asyncHandler(async (req, res) => {
+  const employees = await Employee.find();
+  res.json(employees);
+});
 
 // Create a new employee
-const createEmployee = async (req, res) => {
-  try {
-    const { name, employeeId, jobTitle, emailAddress, mobileNo, photo } =
-      req.body;
-    const newEmployee = new Employee({
+const createEmployee = asyncHandler(async (req, res) => {
+  const { name, employeeId, jobTitle, emailAddress, mobileNo, photo } =
+    req.body;
+
+  if (
+    !name ||
+    !employeeId ||
+    !jobTitle ||
+    !emailAddress ||
+    !mobileNo ||
+    !photo
+  ) {
+    res.status(400);
+    throw new Error("Please Fill all the Fields!");
+  } else {
+    const employee = new Employee({
       name,
       employeeId,
       jobTitle,
@@ -14,28 +32,61 @@ const createEmployee = async (req, res) => {
       photo,
     });
 
-    const savedEmployee = await newEmployee.save();
-    res.status(201).json(savedEmployee);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to create an employee" });
-  }
-};
+    const newEmployee = await employee.save();
 
-// Get all employees
-const getAllEmployees = async (req, res) => {
-  try {
-    const employees = await Employee.find();
-    res.json(employees);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to get employees" });
+    res.status(201).json(newEmployee);
   }
-};
+});
 
-// Other CRUD operations like getEmployeeById, updateEmployee, deleteEmployee, etc.
-// You can add them as needed for your application.
+// Other CRUD operations like getEmployeeById, updateEmployee, deleteEmployee.
+const getEmployeeById = asyncHandler(async (req, res) => {
+  const employee = await Employee.findById(req.params.id);
+
+  if (employee) {
+    res.json(employee);
+  } else {
+    res.status(404).json({ message: "Employee not Found" });
+  }
+});
+
+const updateEmployee = asyncHandler(async (req, res) => {
+  const { name, employeeId, jobTitle, emailAddress, mobileNo, photo } =
+    req.body;
+
+  const employee = await Employee.findById(req.params.id);
+
+  if (employee) {
+    employee.name = name;
+    employee.employeeId = employeeId;
+    employee.jobTitle = jobTitle;
+    employee.emailAddress = emailAddress;
+    employee.mobileNo = mobileNo;
+    employee.photo = photo;
+
+    const updatedEmployee = await employee.save();
+    res.json(updatedEmployee);
+  } else {
+    res.status(404);
+    throw new Error("Employee Not Found");
+  }
+});
+
+const fireEmployee = asyncHandler(async (req, res) => {
+  const employee = await Employee.findById(req.params.id);
+
+  if (employee) {
+    await employee.remove();
+    res.json({ message: "Employee Fired!" });
+  } else {
+    res.status(404);
+    throw new Error("Employee Not Found");
+  }
+});
 
 module.exports = {
-  createEmployee,
   getAllEmployees,
-  // Export other functions here
+  createEmployee,
+  getEmployeeById,
+  updateEmployee,
+  fireEmployee,
 };

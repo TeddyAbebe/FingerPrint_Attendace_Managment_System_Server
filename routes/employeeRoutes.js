@@ -1,14 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const employeeController = require("../controllers/employeeController");
+const {
+  getAllEmployees,
+  createEmployee,
+  getEmployeeById,
+  updateEmployee,
+  fireEmployee,
+} = require("../controllers/employeeController");
 
-// Route for creating a new employee
-router.post("/", employeeController.createEmployee);
+// Route for Getting all employees
+router.route("/").get(getAllEmployees);
 
-// Route for getting all employees
-router.get("/", employeeController.getAllEmployees);
+// Route for Creating a new employee
+router.route("/create").post(createEmployee);
 
-// Other routes like getById, update, delete, etc.
-// You can add them as needed for your application.
+// ROute for Getting, Updating and Deleting an employee
+router.route("/:id").get(getEmployeeById).put(updateEmployee).delete(fireEmployee);
 
 module.exports = router;

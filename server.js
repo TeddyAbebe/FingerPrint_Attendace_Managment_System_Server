@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const employees = require("./data/data");
+const employeeRoutes = require("./routes/employeeRoutes");
 
 // Initialize Express app
 const app = express();
@@ -21,9 +22,11 @@ app.get("/", (req, res) => {
   res.send("Attendance System APIss");
 });
 
-app.get("/api/employees", (req, res) => {
-  res.json(employees);
-});
+app.use("/api/employees", employeeRoutes);
+
+// app.get("/api/employees", (req, res) => {
+//   res.json(employees);
+// });
 
 app.get("/api/employees/:id", (req, res) => {
   const employee = employees.find(

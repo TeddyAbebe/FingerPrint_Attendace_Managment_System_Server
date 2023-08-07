@@ -8,7 +8,7 @@ const getAllEmployees = asyncHandler(async (req, res) => {
 });
 
 // Create a new employee
-const createEmployee = asyncHandler(async (req, res) => {
+const addEmployee = asyncHandler(async (req, res) => {
   const { name, employeeId, jobTitle, emailAddress, mobileNo, photo } =
     req.body;
 
@@ -85,7 +85,7 @@ const fireEmployee = asyncHandler(async (req, res) => {
 
 module.exports = {
   getAllEmployees,
-  createEmployee,
+  addEmployee,
   getEmployeeById,
   updateEmployee,
   fireEmployee,

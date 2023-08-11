@@ -20,19 +20,13 @@ connectDB();
 app.use(cors());
 app.use(bodyParser.json());
 
-
-
 // Routes
-// app.get("/", (req, res) => {
-//   res.send("Attendance System API");
-// });
-
 app.use("/api/admin", adminRoutes);
+app.use("/api/employees", employeeRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
 
-app.use("/api/employees", employeeRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

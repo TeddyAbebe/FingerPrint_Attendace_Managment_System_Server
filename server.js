@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const employeeRoutes = require("./routes/employeeRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 // Initialize Express app
 const app = express();
@@ -19,12 +20,17 @@ connectDB();
 app.use(cors());
 app.use(bodyParser.json());
 
+
+
 // Routes
 // app.get("/", (req, res) => {
 //   res.send("Attendance System API");
 // });
 
 app.use("/api/admin", adminRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.use("/api/employees", employeeRoutes);
 

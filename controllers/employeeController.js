@@ -9,23 +9,14 @@ const getAllEmployees = asyncHandler(async (req, res) => {
 
 // Create a new employee
 const addEmployee = asyncHandler(async (req, res) => {
-  const { name, employeeId, jobTitle, emailAddress, mobileNo, photo } =
-    req.body;
+  const { name, jobTitle, emailAddress, mobileNo, photo } = req.body;
 
-  if (
-    !name ||
-    !employeeId ||
-    !jobTitle ||
-    !emailAddress ||
-    !mobileNo ||
-    !photo
-  ) {
+  if (!name || !jobTitle || !emailAddress || !mobileNo || !photo) {
     res.status(400);
     throw new Error("Please Fill all the Fields!");
   } else {
     const employee = new Employee({
       name,
-      employeeId,
       jobTitle,
       emailAddress,
       mobileNo,
@@ -50,14 +41,12 @@ const getEmployeeById = asyncHandler(async (req, res) => {
 });
 
 const updateEmployee = asyncHandler(async (req, res) => {
-  const { name, employeeId, jobTitle, emailAddress, mobileNo, photo } =
-    req.body;
+  const { name, jobTitle, emailAddress, mobileNo, photo } = req.body;
 
   const employee = await Employee.findById(req.params.id);
 
   if (employee) {
     employee.name = name;
-    employee.employeeId = employeeId;
     employee.jobTitle = jobTitle;
     employee.emailAddress = emailAddress;
     employee.mobileNo = mobileNo;
